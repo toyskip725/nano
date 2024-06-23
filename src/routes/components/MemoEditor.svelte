@@ -1,4 +1,7 @@
 <script lang="ts">
+  // import
+  import IconButton from "$lib/components/IconButton.svelte";
+
   // props
   export let dialog: HTMLDialogElement;
   export let content: string;
@@ -17,9 +20,7 @@
 
 <dialog bind:this={dialog} class="memo-editor">
   <div class="dialog-header">
-    <button type="button" class="close-button" on:click={handleClose}>
-      <span class="close-button-icon material-symbols-outlined">close</span>
-    </button>
+    <IconButton iconName={"close"} onClick={handleClose} />
   </div>
   <form method="dialog">
     <textarea bind:value={value} />
@@ -59,21 +60,6 @@
   }
   .dialog-footer {
     text-align: right;
-  }
-
-  .close-button {
-    background-color: #1f2733;
-    border: none;
-  }
-  .close-button:hover {
-    cursor: pointer;
-  }
-  .close-button-icon {
-    color: #5d7599;
-    font-size: large;
-  }
-  .close-button-icon:hover {
-    color: #e66077;
   }
 
   .save-button {
