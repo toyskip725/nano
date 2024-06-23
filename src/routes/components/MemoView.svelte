@@ -1,8 +1,13 @@
-<script>
+<script lang="ts">
+  // import
+  import MemoEditor from "./MemoEditor.svelte";
+  
+  // props
   export let content;
 
+  let dialog: HTMLDialogElement;
   const onClickEdit = () => {
-    alert("edit clicked");
+    dialog.showModal();
   };
 
   const onClickDelete = () => {
@@ -24,6 +29,7 @@
     </div>
   </div>
 </div>
+<MemoEditor bind:dialog content={content} onSave={(value) => console.log(value)} />
 
 <style>
   p {
