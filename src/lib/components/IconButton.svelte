@@ -18,6 +18,7 @@
   .icon {
     color: #5d7599;
     font-size: large;
+    user-select: none;
   }
   .icon:hover {
     color: #e66077;
