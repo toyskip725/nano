@@ -1,14 +1,20 @@
-<script>
+<script lang="ts">
   import Header from "./components/Header.svelte";
   import SideNavigation from "./components/SideNavigation.svelte";
   import FloatingIconButton from "./components/FloatingIconButton.svelte";
   import MemoView from "./components/MemoView.svelte";
+  import { initializeStore } from "$lib/data/dataStore";
 
-  const items = [
-    { content: "hello svelte!", },
-    { content: "this is a card",},
-    { content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."}
-  ];
+  let memoData = initializeStore();
+  const onSave = (thread: string, content: string) => {
+    const newMemo = {
+      id: memoData.length,
+      thread: thread,
+      createdAt: Date.now.toString(),
+      content: content,
+    };
+    memoData = [...memoData, newMemo];
+  }
 </script>
 
 <svelte:head>
@@ -23,12 +29,12 @@
 <div class="main">
   <SideNavigation />
   <div>
-    {#each items as item}
-      <MemoView content={item.content}/>
+    {#each memoData.toReversed() as memo}
+      <MemoView content={memo.content}/>
     {/each}
   </div>
   <div class="icon-button">
-    <FloatingIconButton />
+    <FloatingIconButton onSave={onSave} />
   </div>
 </div>
 

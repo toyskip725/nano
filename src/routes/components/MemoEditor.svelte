@@ -9,11 +9,13 @@
 
   let value = content;
   const handleClose = () => {
+    value = "";
     dialog.close();
   };
 
   const handleSave = () => {
     onSave(value);
+    value = "";
     dialog.close();
   };
 </script>

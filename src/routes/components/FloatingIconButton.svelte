@@ -2,6 +2,9 @@
   // import
   import MemoEditor from "./MemoEditor.svelte";
 
+  // props
+  export let onSave: (thread: string, content: string) => void;
+
   let dialog: HTMLDialogElement;
   const onAdd = () => {
     dialog.showModal();
@@ -11,7 +14,7 @@
 <button type="button" class="floating-icon-button" on:click={onAdd}>
   <span class="button-icon material-symbols-outlined">add</span>
 </button>
-<MemoEditor bind:dialog content={""} onSave={(value) => console.log(value)} />
+<MemoEditor bind:dialog content={""} onSave={(value) => onSave("test", value)} />
 
 <style>
   .floating-icon-button {
