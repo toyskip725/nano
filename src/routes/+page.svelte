@@ -35,6 +35,7 @@
 <style>
   :global(body) {
     background-color: #1f2733;
+    font-family:'Meiryo', sans-serif;
   }
 
   header {

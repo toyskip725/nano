@@ -47,7 +47,7 @@
     width: 100%;
     height: 200px;
     resize: none;
-    font-family: "Meiryo UI", sans-serif;
+    font-family: 'Meiryo', sans-serif;
     font-size: large;
     color: #d6d7d8;
     background-color: #1f2733;
