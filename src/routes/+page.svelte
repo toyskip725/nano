@@ -1,14 +1,42 @@
-<script>
-  import Header from "./components/Header.svelte";
+<script lang="ts">
   import SideNavigation from "./components/SideNavigation.svelte";
   import FloatingIconButton from "./components/FloatingIconButton.svelte";
   import MemoView from "./components/MemoView.svelte";
+  import { initializeStore } from "$lib/data/dataStore";
+  import { toNormalFormat } from "$lib/utils/datetimeFormat";
 
-  const items = [
-    { content: "hello svelte!", },
-    { content: "this is a card",},
-    { content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."}
-  ];
+  let memoData = initializeStore();
+  let thread = "";
+
+  const onThreadSelectionChanged = (threadName: string) => {
+    thread = threadName;
+  };
+
+  const onEdit = (id: number, thread: string, content: string) => {
+    const targetIndex = memoData.findIndex(memo => memo.id === id);
+    if (targetIndex === -1) {
+      return;
+    }
+
+    const targetMemo = memoData[targetIndex];
+    targetMemo.thread = thread;
+    targetMemo.content = content;
+    memoData = memoData.toSpliced(targetIndex, 1, targetMemo);
+  };
+
+  const onSave = (thread: string, content: string) => {
+    const newMemo = {
+      id: memoData.length + 1,
+      thread: thread,
+      createdAt: toNormalFormat(new Date()),
+      content: content,
+    };
+    memoData = [...memoData, newMemo];
+  };
+
+  const onDelete = (id: number) => {
+    memoData = memoData.filter(memo => memo.id !== id);
+  };
 </script>
 
 <svelte:head>
@@ -17,34 +45,35 @@
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" />
 </svelte:head>
 
-<header>
-  <Header />
-</header>
 <div class="main">
-  <SideNavigation />
-  <div>
-    {#each items as item}
-      <MemoView content={item.content}/>
+  <div class="sidebar">
+    <SideNavigation items={memoData} onSelectionChanged={onThreadSelectionChanged} />
+  </div>
+  <div class="memo-stack">
+    {#each memoData.filter(memo => memo.thread === thread).toReversed() as memo}
+      <MemoView memo={memo} onEdit={onEdit} onDelete={onDelete} />
     {/each}
   </div>
   <div class="icon-button">
-    <FloatingIconButton />
+    <FloatingIconButton onSave={onSave} />
   </div>
 </div>
 
 <style>
   :global(body) {
     background-color: #1f2733;
+    font-family:'Meiryo', sans-serif;
   }
 
-  header {
-    max-width: 960px;
-    margin: auto;
-  }
   .main {
     max-width: 960px;
     margin: auto;
     display: flex;
+  }
+  .sidebar {
+    position: sticky;
+    align-self: flex-start;
+    top: 0em;
   }
   .icon-button {
     position: fixed;

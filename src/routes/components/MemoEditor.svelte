@@ -4,26 +4,32 @@
 
   // props
   export let dialog: HTMLDialogElement;
+  export let thread: string;
   export let content: string;
-  export let onSave: (value: string) => void;
+  export let onSave: (thread: string, content: string) => void;
 
-  let value = content;
   const handleClose = () => {
+    thread = "";
+    content = "";
     dialog.close();
   };
 
   const handleSave = () => {
-    onSave(value);
+    onSave(thread, content);
     dialog.close();
   };
 </script>
 
 <dialog bind:this={dialog} class="memo-editor">
   <div class="dialog-header">
+    <div class="thread-editor">
+      <span class="thread-editor-label">Thread: </span>
+      <input bind:value={thread} />
+    </div>
     <IconButton iconName={"close"} onClick={handleClose} />
   </div>
   <form method="dialog">
-    <textarea bind:value={value} />
+    <textarea bind:value={content} />
     <div class="dialog-footer">
       <button type="button" class="cancel-button" on:click={handleClose}>Cancel</button>
       <button type="submit" class="save-button" on:click={handleSave}>Save</button>
@@ -43,11 +49,24 @@
     opacity: 0.5;
   }
 
+  .thread-editor-label {
+    color: #5d7599;
+    user-select: none;
+  }
+  input {
+    font-family: 'Meiryo', sans-serif;
+    font-size: medium;
+    color: #d6d7d8;
+    background-color: #1f2733;
+    border: none;
+    outline: none;
+  }
+
   textarea {
     width: 100%;
     height: 200px;
     resize: none;
-    font-family: "Meiryo UI", sans-serif;
+    font-family: 'Meiryo', sans-serif;
     font-size: large;
     color: #d6d7d8;
     background-color: #1f2733;
@@ -56,7 +75,9 @@
   }
 
   .dialog-header {
-    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4em 0em 1em 0em;
   }
   .dialog-footer {
     text-align: right;

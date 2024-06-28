@@ -1,10 +1,13 @@
 <script lang="ts">
   // import
+  import type { Memo } from "$lib/types/memo";
   import IconButton from "$lib/components/IconButton.svelte";
   import MemoEditor from "./MemoEditor.svelte";
   
   // props
-  export let content;
+  export let memo: Memo;
+  export let onEdit: (id: number, thread: string, content: string) => void;
+  export let onDelete: (id: number) => void;
 
   let dialog: HTMLDialogElement;
   const onClickEdit = () => {
@@ -12,21 +15,21 @@
   };
 
   const onClickDelete = () => {
-    alert("delete clicked");
+    onDelete(memo.id);
   };
 </script>
 
 <div class="memo">
-  <p>{content}</p>
+  <p>{memo.content}</p>
   <div class="info-wrapper">
-    <span class="info">2024/06/xx 12:00</span>
+    <span class="info">{memo.createdAt}</span>
     <div class="info-button-wrapper">
       <IconButton iconName={"edit"} onClick={onClickEdit} />
       <IconButton iconName={"delete"} onClick={onClickDelete} />
     </div>
   </div>
 </div>
-<MemoEditor bind:dialog content={content} onSave={(value) => console.log(value)} />
+<MemoEditor bind:dialog thread={memo.thread} content={memo.content} onSave={(thread, content) => onEdit(memo.id, thread, content)} />
 
 <style>
   p {
