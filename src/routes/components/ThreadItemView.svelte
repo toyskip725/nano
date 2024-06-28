@@ -1,6 +1,7 @@
 <script lang="ts">
   // props
   export let threadName: string;
+  export let count: number;
   export let onSelect: (threadName: string) => void;
 
   const onClick = () => {
@@ -9,7 +10,9 @@
 </script>
 
 <div>
-  <button type="button" class="thread-item" on:click={onClick}>{threadName}</button>
+  <button type="button" class="thread-item" on:click={onClick}>
+    {threadName} <span class="thread-count">({count})</span>
+  </button>
 </div>
 
 <style>
@@ -25,5 +28,9 @@
   }
   .thread-item:hover {
     cursor: pointer;
+  }
+
+  .thread-count {
+    color: #5d7599;
   }
 </style>

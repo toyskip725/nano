@@ -47,7 +47,7 @@
 
 <div class="main">
   <div class="sidebar">
-    <SideNavigation onSelectionChanged={onThreadSelectionChanged} />
+    <SideNavigation items={memoData} onSelectionChanged={onThreadSelectionChanged} />
   </div>
   <div class="memo-stack">
     {#each memoData.filter(memo => memo.thread === thread).toReversed() as memo}
