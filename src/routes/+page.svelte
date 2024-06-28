@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Header from "./components/Header.svelte";
   import SideNavigation from "./components/SideNavigation.svelte";
   import FloatingIconButton from "./components/FloatingIconButton.svelte";
   import MemoView from "./components/MemoView.svelte";
@@ -7,6 +6,11 @@
   import { toNormalFormat } from "$lib/utils/datetimeFormat";
 
   let memoData = initializeStore();
+  let thread = "";
+
+  const onThreadSelectionChanged = (threadName: string) => {
+    thread = threadName;
+  };
 
   const onEdit = (id: number, thread: string, content: string) => {
     const targetIndex = memoData.findIndex(memo => memo.id === id);
@@ -41,13 +45,12 @@
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" />
 </svelte:head>
 
-<header>
-  <Header />
-</header>
 <div class="main">
-  <SideNavigation />
-  <div>
-    {#each memoData.toReversed() as memo}
+  <div class="sidebar">
+    <SideNavigation onSelectionChanged={onThreadSelectionChanged} />
+  </div>
+  <div class="memo-stack">
+    {#each memoData.filter(memo => memo.thread === thread).toReversed() as memo}
       <MemoView memo={memo} onEdit={onEdit} onDelete={onDelete} />
     {/each}
   </div>
@@ -62,14 +65,15 @@
     font-family:'Meiryo', sans-serif;
   }
 
-  header {
-    max-width: 960px;
-    margin: auto;
-  }
   .main {
     max-width: 960px;
     margin: auto;
     display: flex;
+  }
+  .sidebar {
+    position: sticky;
+    align-self: flex-start;
+    top: 1em;
   }
   .icon-button {
     position: fixed;
