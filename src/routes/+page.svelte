@@ -6,6 +6,19 @@
   import { initializeStore } from "$lib/data/dataStore";
 
   let memoData = initializeStore();
+
+  const onEdit = (id: number, thread: string, content: string) => {
+    const targetIndex = memoData.findIndex(memo => memo.id === id);
+    if (targetIndex === -1) {
+      return;
+    }
+
+    const targetMemo = memoData[targetIndex];
+    targetMemo.thread = thread;
+    targetMemo.content = content;
+    memoData = memoData.toSpliced(targetIndex, 1, targetMemo);
+  };
+
   const onSave = (thread: string, content: string) => {
     const newMemo = {
       id: memoData.length,
@@ -14,7 +27,11 @@
       content: content,
     };
     memoData = [...memoData, newMemo];
-  }
+  };
+
+  const onDelete = (id: number) => {
+    memoData = memoData.filter(memo => memo.id !== id);
+  };
 </script>
 
 <svelte:head>
@@ -30,7 +47,7 @@
   <SideNavigation />
   <div>
     {#each memoData.toReversed() as memo}
-      <MemoView content={memo.content}/>
+      <MemoView memo={memo} onEdit={onEdit} onDelete={onDelete} />
     {/each}
   </div>
   <div class="icon-button">
