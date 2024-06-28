@@ -1,4 +1,11 @@
-<p class="title"><span class="title-icon">＊</span>nano</p>
+<script lang="ts">
+  // props
+  export let threadName = "";
+
+  $: title = threadName !== "" ? `namo / ${threadName}` : "nano";
+</script>
+
+<p class="title"><span class="title-icon">＊</span>{title}</p>
 
 <style>
   .title {

@@ -9,6 +9,12 @@
   export let items: Memo[];
   export let onSelectionChanged: (threadName: string) => void;
 
+  let thread = "";
+  const onSelect = (threadName: string) => {
+    thread = threadName;
+    onSelectionChanged(threadName);
+  };
+
   let threads: ThreadInfo[];
   $: {
     threads = [];
@@ -31,9 +37,9 @@
 </script>
 
 <div class="side-nav">
-  <Header />
+  <Header threadName={thread}/>
   {#each threads as thread}
-    <ThreadItemView threadName={thread.name} count={thread.count} onSelect={onSelectionChanged} />
+    <ThreadItemView threadName={thread.name} count={thread.count} onSelect={onSelect} />
   {/each}
 </div>
 
