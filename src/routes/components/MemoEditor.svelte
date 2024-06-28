@@ -7,15 +7,13 @@
   export let content: string;
   export let onSave: (value: string) => void;
 
-  let value = content;
   const handleClose = () => {
-    value = "";
+    content = "";
     dialog.close();
   };
 
   const handleSave = () => {
-    onSave(value);
-    value = "";
+    onSave(content);
     dialog.close();
   };
 </script>
@@ -25,7 +23,7 @@
     <IconButton iconName={"close"} onClick={handleClose} />
   </div>
   <form method="dialog">
-    <textarea bind:value={value} />
+    <textarea bind:value={content} />
     <div class="dialog-footer">
       <button type="button" class="cancel-button" on:click={handleClose}>Cancel</button>
       <button type="submit" class="save-button" on:click={handleSave}>Save</button>
