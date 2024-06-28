@@ -4,6 +4,7 @@
   import FloatingIconButton from "./components/FloatingIconButton.svelte";
   import MemoView from "./components/MemoView.svelte";
   import { initializeStore } from "$lib/data/dataStore";
+  import { toNormalFormat } from "$lib/utils/datetimeFormat";
 
   let memoData = initializeStore();
 
@@ -21,9 +22,9 @@
 
   const onSave = (thread: string, content: string) => {
     const newMemo = {
-      id: memoData.length,
+      id: memoData.length + 1,
       thread: thread,
-      createdAt: Date.now.toString(),
+      createdAt: toNormalFormat(new Date()),
       content: content,
     };
     memoData = [...memoData, newMemo];
