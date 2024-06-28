@@ -73,7 +73,7 @@
   .sidebar {
     position: sticky;
     align-self: flex-start;
-    top: 1em;
+    top: 0em;
   }
   .icon-button {
     position: fixed;
