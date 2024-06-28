@@ -29,7 +29,7 @@
     </div>
   </div>
 </div>
-<MemoEditor bind:dialog content={memo.content} onSave={(value) => onEdit(memo.id, "test", value)} />
+<MemoEditor bind:dialog thread={memo.thread} content={memo.content} onSave={(thread, content) => onEdit(memo.id, thread, content)} />
 
 <style>
   p {

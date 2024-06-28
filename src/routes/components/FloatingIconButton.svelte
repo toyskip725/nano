@@ -14,7 +14,7 @@
 <button type="button" class="floating-icon-button" on:click={onAdd}>
   <span class="button-icon material-symbols-outlined">add</span>
 </button>
-<MemoEditor bind:dialog content={""} onSave={(value) => onSave("test", value)} />
+<MemoEditor bind:dialog thread={""} content={""} onSave={onSave} />
 
 <style>
   .floating-icon-button {
