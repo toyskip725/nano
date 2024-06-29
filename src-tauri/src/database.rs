@@ -50,7 +50,7 @@ pub async fn get_all_memo(pool: &SqlitePool) -> Result<Vec<Memo>, sqlx::Error> {
 
 pub async fn update_memo(pool: &SqlitePool, memo: Memo) -> Result<SqliteQueryResult, sqlx::Error> {
   let result = sqlx::query(
-    "UPDATE memo SET thread = ? content = ? WHERE id = ?")
+    "UPDATE memo SET thread = ?, content = ? WHERE id = ?")
     .bind(memo.thread)
     .bind(memo.content)
     .bind(memo.id)
