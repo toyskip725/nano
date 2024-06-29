@@ -1,12 +1,19 @@
 <script lang="ts">
+  // import
   import SideNavigation from "./components/SideNavigation.svelte";
   import FloatingIconButton from "./components/FloatingIconButton.svelte";
   import MemoView from "./components/MemoView.svelte";
-  import { initializeStore } from "$lib/data/dataStore";
   import { toNormalFormat } from "$lib/utils/datetimeFormat";
+  import { TauriCommand } from "$lib/command";
+  import type { Memo } from "$lib/types/memo";
 
-  let memoData = initializeStore();
+  let memoData: Memo[] = [];
   let thread = "";
+
+  const sync = async () => {
+    memoData = await TauriCommand.invokeGetAll();
+  };
+  sync();
 
   const onThreadSelectionChanged = (threadName: string) => {
     thread = threadName;
@@ -22,6 +29,7 @@
     targetMemo.thread = thread;
     targetMemo.content = content;
     memoData = memoData.toSpliced(targetIndex, 1, targetMemo);
+    TauriCommand.invokeUpdate(targetMemo);
   };
 
   const onSave = (thread: string, content: string) => {
@@ -32,10 +40,12 @@
       content: content,
     };
     memoData = [...memoData, newMemo];
+    TauriCommand.invokeCreate(newMemo);
   };
 
   const onDelete = (id: number) => {
     memoData = memoData.filter(memo => memo.id !== id);
+    TauriCommand.invokeDelete(id);
   };
 </script>
 

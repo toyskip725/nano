@@ -9,8 +9,6 @@
   export let onSave: (thread: string, content: string) => void;
 
   const handleClose = () => {
-    thread = "";
-    content = "";
     dialog.close();
   };
 

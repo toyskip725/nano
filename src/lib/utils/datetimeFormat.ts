@@ -5,5 +5,5 @@ export const toNormalFormat = (date: Date) => {
   const hours = date.getHours();
   const minutes = date.getMinutes();
 
-  return `${year}/${String(month + 1).padStart(2, '0')}/${String(day).padStart(2, '0')} ${hours}:${minutes}`;
+  return `${year}/${String(month + 1).padStart(2, '0')}/${String(day).padStart(2, '0')} ${hours}:${String(minutes).padStart(2, '0')}`;
 };
