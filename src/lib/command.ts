@@ -13,7 +13,20 @@ export namespace TauriCommand {
 
   export const invokeGetAll = async () => {
     const result = await invoke("cmd_get_all");
-    return result as Memo[];
+    console.log(result);
+
+    if(!Array.isArray(result)) {
+      return [] as Memo[];
+    }
+
+    return result.map(element => {
+      return {
+        id: element.id as number,
+        thread: element.thread as string,
+        createdAt: element.created_at as string,
+        content: element.content as string,
+      } as Memo;
+    })
   }
 
   export const invokeUpdate = async (memo: Memo) => {
