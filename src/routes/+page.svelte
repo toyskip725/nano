@@ -34,8 +34,9 @@
   };
 
   const onSave = async (thread: string, content: string) => {
+    const latestId = memoData.length !== 0 ? memoData.toSorted((a, b) => b.id - a.id)[0].id : 0;
     const newMemo = {
-      id: memoData.length + 1,
+      id: latestId + 1,
       thread: thread,
       createdAt: toNormalFormat(new Date()),
       content: content,
