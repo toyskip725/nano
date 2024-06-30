@@ -1,4 +1,6 @@
-use sqlx::sqlite::{SqlitePool, SqliteQueryResult};
+use sqlx::{migrate::MigrateDatabase, sqlite::{SqlitePool, SqliteQueryResult}};
+
+const DATABASE_URL: &str = "./database.db";
 
 #[derive(Debug, sqlx::FromRow, serde::Serialize, serde::Deserialize)]
 pub struct Memo {
@@ -19,10 +21,18 @@ impl Memo {
   }
 }
 
-pub async fn create_connection_pool() -> Result<SqlitePool, sqlx::Error> {
-  let database_url = "./database.db";
-  let pool = SqlitePool::connect(&database_url).await?;
+pub async fn setup_connection() -> Result<SqlitePool, sqlx::Error> {
+  let is_exist = sqlx::Sqlite::database_exists(&DATABASE_URL).await?;
+  if !is_exist {
+    sqlx::Sqlite::create_database(&DATABASE_URL).await?;
+  }
 
+  let pool = SqlitePool::connect(&DATABASE_URL).await?;
+  
+  if !is_exist {
+    sqlx::migrate!("./migrations").run(&pool).await?;
+  }
+  
   Ok(pool)
 }
 
