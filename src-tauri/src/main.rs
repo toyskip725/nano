@@ -2,12 +2,12 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use tauri::{async_runtime::block_on, State};
-use database::{create_connection_pool, Memo};
+use database::{setup_connection, Memo};
 
 mod database;
 
 fn main() -> Result<(), sqlx::Error> {
-  let db_pool = block_on(create_connection_pool())?;
+  let db_pool = block_on(setup_connection())?;
 
   tauri::Builder::default()
     .manage(db_pool)

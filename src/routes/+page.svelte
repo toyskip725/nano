@@ -19,7 +19,7 @@
     thread = threadName;
   };
 
-  const onEdit = (id: number, thread: string, content: string) => {
+  const onEdit = async (id: number, thread: string, content: string) => {
     const targetIndex = memoData.findIndex(memo => memo.id === id);
     if (targetIndex === -1) {
       return;
@@ -28,24 +28,25 @@
     const targetMemo = memoData[targetIndex];
     targetMemo.thread = thread;
     targetMemo.content = content;
-    memoData = memoData.toSpliced(targetIndex, 1, targetMemo);
-    TauriCommand.invokeUpdate(targetMemo);
+
+    await TauriCommand.invokeUpdate(targetMemo);
+    await sync();
   };
 
-  const onSave = (thread: string, content: string) => {
+  const onSave = async (thread: string, content: string) => {
     const newMemo = {
       id: memoData.length + 1,
       thread: thread,
       createdAt: toNormalFormat(new Date()),
       content: content,
     };
-    memoData = [...memoData, newMemo];
-    TauriCommand.invokeCreate(newMemo);
+    await TauriCommand.invokeCreate(newMemo);
+    await sync();
   };
 
-  const onDelete = (id: number) => {
-    memoData = memoData.filter(memo => memo.id !== id);
-    TauriCommand.invokeDelete(id);
+  const onDelete = async (id: number) => {
+    await TauriCommand.invokeDelete(id);
+    await sync();
   };
 </script>
 
